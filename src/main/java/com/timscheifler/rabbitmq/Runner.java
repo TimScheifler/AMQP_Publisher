@@ -1,7 +1,6 @@
 package com.timscheifler.rabbitmq;
 
 import java.sql.Timestamp;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.utils.SerializationUtils;
@@ -24,12 +23,11 @@ public class Runner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         while(true){
-            TimeObject timeObject = new TimeObject(new Timestamp(System.currentTimeMillis()).getTime());
-            byte[] data = SerializationUtils.serialize(timeObject);
+            Timestamp ts = new Timestamp(System.currentTimeMillis());
+            byte[] data = SerializationUtils.serialize(ts);
 
             System.out.println("Sending message...");
             rabbitTemplate.convertAndSend(Application.topicExchangeName, "foo.bar.baz", data);
-            receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
             Thread.sleep(WAIT_TIME);
         }
     }

@@ -1,5 +1,6 @@
 package com.timscheifler.rabbitmq;
 
+
 import java.io.Serializable;
 
 public class TimeObject implements Serializable {
